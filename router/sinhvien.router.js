@@ -1,8 +1,8 @@
-var controller= require('../controller/sinhvien');
+var controller = require('../controller/sinhvien');
 var aws = require('../uploadAWS')
-var express= require('express');
-var router= express.Router();
-module.exports= router;
+var express = require('express');
+var router = express.Router();
+module.exports = router;
 router.get('/sinhvien', controller.getAllSinhVien);
 router.get('/sinhvien/add', controller.getAddSinhVien);
 router.get('/sinhvien/update/:id', controller.getUpdateSinhVien);

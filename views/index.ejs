@@ -33,8 +33,14 @@
                     <td><%= value.ten_sinhvien %></td>
                     <td><%= value.ma_lop %></td>
                     <td><%= value.namsinh %></td>
-                    <td><img style=" width: 50px; height: 50px; border-radius: 50%;"  src="https://baitapcnm.s3.amazonaws.com/<%= value.avatar %>" alt="">
-                       </td>
+                    <td><img style=" width: 50px; height: 50px; border-radius: 50%;"
+                            src="https://cnms3.s3-ap-southeast-1.amazonaws.com/<%= value.avatar %>" alt="">
+                        <!-- <video width="320" height="240" controls>
+                            <source src="https://cnms3.s3-ap-southeast-1.amazonaws.com/<%= value.avatar %>"
+                                type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video> -->
+                    </td>
                     <td><a href="/sinhvien/delete/<%= value.id %>" class="btn btn-danger">Delete</a>
                         <a href="/sinhvien/update/<%= value.id %>" class="btn btn-info">Update</a></td>
                 </tr>
@@ -43,8 +49,9 @@
 
             </tbody>
         </table>
+
         <a href="/sinhvien/add" class="btn btn-success">Them Sinh Vien</a>
-        
+
     </div>
 </body>
 

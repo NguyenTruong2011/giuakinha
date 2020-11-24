@@ -1,12 +1,13 @@
 var AWS = require("aws-sdk");
 var _ = require('lodash');
-var formidable =require('formidable');
-var secret = require('../secret/ASW');
+var formidable = require('formidable');
+//var secret = require('../secret/ASW');
 //cai dat dyamodb
 let awsConfig = {
-    "region": "us-east-1",
-    "endpoint": "http://dynamodb.us-east-1.amazonaws.com",
-    "accessKeyId": secret.aws.AWSAccessKeyId, "secretAccessKey":secret.aws.AWSSecretKey ,
+    "region": "ap-southeast-1",
+
+    "accessKeyId": "", 
+	"secretAccessKey": "",
 };
 AWS.config.update(awsConfig);
 let docClient = new AWS.DynamoDB.DocumentClient();
@@ -19,33 +20,33 @@ module.exports.getAllSinhVien = function (req, res) {
         if (err) {
             res.end(JSON.stringify({ error: 'Lỗi không thể truy xuất dữ liệu' }));
         } else {
-            res.render('index', {data: data});
+            res.render('index', { data: data });
         }
     });
 };
 
 // get page them sinh vien
-module.exports.getAddSinhVien = function(req, res){
+module.exports.getAddSinhVien = function (req, res) {
     res.render('add');
 }
 // get page update sinh vien
-module.exports.getUpdateSinhVien = function(req, res){
+module.exports.getUpdateSinhVien = function (req, res) {
     let params = {
         TableName: "SinhVien",
         Key: {
             id: req.params.id
-          },
+        },
     };
     docClient.get(params, function (err, data) {
         if (err) {
-          res.send("users::fetchOneByKey::error - " + JSON.stringify(err, null, 2));
+            res.send("users::fetchOneByKey::error - " + JSON.stringify(err, null, 2));
         } else {
             // res.send(
             //     "users::fetchOneByKey::success - " + JSON.stringify(data, null, 2)
             //   );
-            res.render('update', { data: data});
+            res.render('update', { data: data });
         }
-      });
+    });
 
 }
 // them sinh vien
@@ -90,34 +91,34 @@ module.exports.Upload = function (req, res) {
     form.parse(req);
 },
 
-//cap nhat thong tin sinh vien
-module.exports.updateSinhVien = function (req, res) {
-    const { id, ma_sinhvien, ten_sinhvien, namsinh, ma_lop, upload } = req.body;
-    const params = {
-        TableName: 'SinhVien',
-        Key: {
-            id: id
-        },
-        UpdateExpression: "set  ma_sinhvien = :ma_sinhvien, ten_sinhvien = :ten_sinhvien , namsinh = :namsinh, ma_lop = :ma_lop, avatar =:avatar",
-        ExpressionAttributeValues: {
-            
-            ":ma_sinhvien": ma_sinhvien,
-            ":ten_sinhvien": ten_sinhvien,
-            ":ma_lop": ma_lop,
-            ":avatar": upload,
-            ":namsinh": namsinh,
+    //cap nhat thong tin sinh vien
+    module.exports.updateSinhVien = function (req, res) {
+        const { id, ma_sinhvien, ten_sinhvien, namsinh, ma_lop, upload } = req.body;
+        const params = {
+            TableName: 'SinhVien',
+            Key: {
+                id: id
+            },
+            UpdateExpression: "set  ma_sinhvien = :ma_sinhvien, ten_sinhvien = :ten_sinhvien , namsinh = :namsinh, ma_lop = :ma_lop, avatar =:avatar",
+            ExpressionAttributeValues: {
 
-        },
-        ReturnValues: "UPDATED_NEW"
+                ":ma_sinhvien": ma_sinhvien,
+                ":ten_sinhvien": ten_sinhvien,
+                ":ma_lop": ma_lop,
+                ":avatar": upload,
+                ":namsinh": namsinh,
+
+            },
+            ReturnValues: "UPDATED_NEW"
+        };
+        docClient.update(params, (err, data) => {
+            if (err) {
+                res.send("users::save::error - " + JSON.stringify(err, null, 2));
+            } else {
+                res.redirect('/sinhvien');
+            }
+        });
     };
-    docClient.update(params, (err, data) => {
-        if (err) {
-            res.send("users::save::error - " + JSON.stringify(err, null, 2));
-        } else {
-            res.redirect('/sinhvien');
-        }
-    });
-};
 //xoa sinh vien klhoi danh sach
 module.exports.deleteSinhVien = function (req, res) {
     var params = {
